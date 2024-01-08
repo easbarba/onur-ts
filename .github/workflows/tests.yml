@@ -1,0 +1,28 @@
+name: tests
+
+on:
+  push:
+    branches: ['main']
+  pull_request:
+    branches: ['main']
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: registry.gitlab.com/easbarba/onur-ts:0.2.0
+      env:
+        HOME: /home/easbarba/app
+    defaults:
+      run:
+        working-directory: /home/easbarba/app
+
+    steps:
+      - name: format
+        run: bun run format-check
+
+      - name: lint
+        run: bun run lint
+
+      - name: integration tests
+        run: bun run tests

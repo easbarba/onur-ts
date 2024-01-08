@@ -13,12 +13,17 @@ You should have received a copy of the GNU General Public License
 along with Onur. If not, see <https://www.gnu.org/licenses/>.
 -->
 
-# CHANGELOG
+# TODO
 
-# 0.2.0
+### High
 
-feat: probe for configurations
+-   validation of repository links
+-   actions: --filter rust
+-   actions: --only rust,haskel,commonlisp
+-   actions: --exclude rust,haskel,commonlisp
+-   config: branch defaults to master
 
-# 0.1.0
+### Low
 
--   initial structure
+-   config: move on these to a syntax check class
+-   cli: add single configuration file option: `--json`

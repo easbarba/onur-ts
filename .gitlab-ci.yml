@@ -1,14 +1,22 @@
+image: registry.gitlab.com/easbarba/onur-ts:0.2.0
 stages:
-  - test
+    - test
 
 cache:
-  paths:
-    - node_modules/
+    paths:
+        - node_modules/
+
+Format:
+    stage: test
+    script:
+        - bun run format-check
+
+Lint:
+    stage: test
+    script:
+        - bun run lint
 
 Integration Test:
-  stage: test
-  image: oven/bun:1
-  before_script:
-    - bun install
-  script:
-    - bun run tests
+    stage: test
+    script:
+        - bun run tests

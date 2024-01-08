@@ -1,59 +1,82 @@
 <!--
-Onur-Js is free software: you can redistribute it and/or modify
+Onur is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
-Onur-Js is distributed in the hope that it will be useful,
+Onur is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with Onur-Js. If not, see <https://www.gnu.org/licenses/>.
+along with Onur. If not, see <https://www.gnu.org/licenses/>.
 -->
 
 # Onur
 
 Easily manage multiple FLOSS repositories.
 
-[go](https://github.com/easbarba/onur-js-go) - [rust](https://github.com/easbarba/onur-js-rust) - [python](https://github.com/easbarba/onur-js-python) - [php](https://github.com/easbarba/onur-js-php) - [java](https://github.com/easbarba/onur-js-java) 
+[c](https://gitlab.com/easbarba/onur) | [dotnet](https://gitlab.com/easbarba/onur-dotnet) | [go](https://gitlab.com/easbarba/onur-go) | [python](https://gitlab.com/easbarba/onur-python) | [rust](https://gitlab.com/easbarba/onur-rust) | [php](https://gitlab.com/easbarba/onur-php) | [java](https://gitlab.com/easbarba/onur-java)
 
 ## USAGE
+
+```shell
+onur --grab
+onur --archive nuxt,awesomewm,gitignore
+```
+
+Consult `onur --help` for more options.
+
+## INSTALLATION
+
+Just run `bun install`.
+
+Tip: Not fond of messing around your system packages, [GNU Guix](https://guix.gnu.org/manual/devel/en/html_node/Invoking-guix-shell.html) is able to run `onur` in dry-run way locally: `guix shell --check`.
+
+## CONFIGURATION FILE
 
 `Onur` consumes configuration in the following manners:
 
 By default it looks for configuration files at `$XDG_CONFIG/onur` or in the directory set in the `$ONUR_CONFIG_HOME` environment variable.
 
-```shell
-onur grab
-onur archive nuxt,awesomewm,gitignore
-onur help
-```
-
-## INSTALLATION
-
-`Onur` requires a [C99](https://gcc.gnu.org/) compiler and [Meson](https://mesonbuild.com/), then just run `make clean all`, and executable file will be placed at `$PWD/.build/onur-js`.
-
-Tip: A clean install without messing around your system is easily achievable with [GNU Guix](https://guix.gnu.org/manual/devel/en/html_node/Invoking-guix-shell.html): `guix shell --check`.
-
-## CONFIGURATION FILE
-
 A `onur` single configuration file:
 
 ```json
-[
-  {
-    "name": "awesomewm",
-    "branch": "dev",
-    "url": "https://github.com/awesomeWM/awesome"
-  },
-  {
-    "name": "nuxt",
-    "branch": "main",
-    "url": "https://github.com/nuxt/framework"
-  }
-]
+{
+    "main": [
+        {
+            "name": "awesomewm",
+            "url": "https://github.com/awesomeWM/awesome"
+        },
+        {
+            "name": "nuxt",
+            "branch": "main",
+            "url": "https://github.com/nuxt/framework"
+        }
+    ],
+    "misc": [
+        {
+            "name": "awesomewm",
+            "url": "https://github.com/awesomeWM/awesome"
+        },
+        {
+            "name": "nuxt",
+            "branch": "main",
+            "url": "https://github.com/nuxt/framework"
+        }
+    ],
+    "tools/gnu": [
+        {
+            "name": "inetutils",
+            "url": "https://git.savannah.gnu.org/git/inetutils.git"
+        },
+        {
+            "name": "gnu-wget",
+            "url": "https://git.savannah.gnu.org/git/wget.git"
+        }
+    ]
+}
 ```
 
 More examples of configuration files are at `examples`.
@@ -66,20 +89,19 @@ quiet = true
 depth = 1
 ```
 
-## TODO
+## DEVELOPMENT
 
-### High
+In development it may suit you better running the tests in a isolated environment
+with containers, that can be done so:
 
-- validation of repository links 
-- actions: --filter rust
-- actions: --only rust,haskel,commonlisp
-- actions: --exclude rust,haskel,commonlisp
-- config: branch defaults to master
+    docker run --rm -it $(docker build -qf Containerfile.run)
 
-### Low
+or:
 
-- config: move on these to a syntax check class
-- cli: add single configuration file option: `--json`
+    podman build https://gitlab.com/easbarba/onur/-/raw/main/Containerfile.dev --tag onur:latest
+    podman run --rm -it onur:latest
+
+![Onur CLI](onur.png)
 
 ## LICENSE
 

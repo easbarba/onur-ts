@@ -15,26 +15,22 @@
 
 'use strict';
 
-import process from 'process';
+import { all } from './repository';
 
-import { backup, grab } from './commands';
-
-const command: string = process.argv[2];
-
-// RUN
-if (command === '--grab') {
-    await grab();
+async function grab(): Promise<void> {
+    try {
+        await all().then((files) => {
+            files.forEach((file) => {
+                console.log(`- ${file}`);
+            });
+        });
+    } catch (err) {
+        console.error('Error list configurations: ', err);
+    }
 }
 
-if (command === '--backup') {
-    backup('awesomewm,git,swift-format');
+function backup(projects: string): void {
+    console.log(`backin up: ${projects}`);
 }
 
-if (command === '--help' || command === undefined) {
-    console.log('Onur - Easily manage multiple floss repositories.');
-}
-
-// const file = Bun.file(import.meta.dir + "/package.json"); // BunFile
-// const pkg = await file.json(); // BunFile extends Blob
-// pkg.name = "my-package";
-// pkg.version = "1.0.0";
+export { backup, grab };

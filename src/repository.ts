@@ -15,26 +15,24 @@
 
 'use strict';
 
-import process from 'process';
+import fs, { promises } from 'fs';
+import path from 'path';
 
-import { backup, grab } from './commands';
+import { onurHome } from './globals';
 
-const command: string = process.argv[2];
+export async function all(): Promise<string[]> {
+    let result: string[] = await promises.readdir(onurHome);
 
-// RUN
-if (command === '--grab') {
-    await grab();
+    result = result
+        .filter((file) => {
+            return path.extname(file).toLowerCase() === '.json';
+        })
+        .map((file) => {
+            // adds absolute path
+            return path.join(onurHome, file);
+        })
+        .filter((file) => fs.existsSync(file)) // filter unixistent files
+        .filter((file) => fs.readFileSync(file).toString().length !== 0); // filter empty files
+
+    return result;
 }
-
-if (command === '--backup') {
-    backup('awesomewm,git,swift-format');
-}
-
-if (command === '--help' || command === undefined) {
-    console.log('Onur - Easily manage multiple floss repositories.');
-}
-
-// const file = Bun.file(import.meta.dir + "/package.json"); // BunFile
-// const pkg = await file.json(); // BunFile extends Blob
-// pkg.name = "my-package";
-// pkg.version = "1.0.0";

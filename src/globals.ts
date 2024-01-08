@@ -15,26 +15,12 @@
 
 'use strict';
 
-import process from 'process';
+import path from 'path';
 
-import { backup, grab } from './commands';
+export const homedir: string | null = process.env.HOME ?? null;
 
-const command: string = process.argv[2];
-
-// RUN
-if (command === '--grab') {
-    await grab();
+if (homedir == null) {
+    process.exit(1);
 }
 
-if (command === '--backup') {
-    backup('awesomewm,git,swift-format');
-}
-
-if (command === '--help' || command === undefined) {
-    console.log('Onur - Easily manage multiple floss repositories.');
-}
-
-// const file = Bun.file(import.meta.dir + "/package.json"); // BunFile
-// const pkg = await file.json(); // BunFile extends Blob
-// pkg.name = "my-package";
-// pkg.version = "1.0.0";
+export const onurHome: string = path.join(homedir, '.config', 'onur');
