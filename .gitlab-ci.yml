@@ -1,0 +1,14 @@
+stages:
+  - test
+
+cache:
+  paths:
+    - node_modules/
+
+Integration Test:
+  stage: test
+  image: oven/bun:1
+  before_script:
+    - bun install
+  script:
+    - bun run tests
